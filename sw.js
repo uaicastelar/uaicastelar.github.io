@@ -1,5 +1,5 @@
 
-const cacheActual = 'UAIMobile-v2';
+const cacheActual = 'UAIMobileCastelar-v1';
 
 const recursosEstaticos = [
   'css/materialize.min.css',  
@@ -31,4 +31,19 @@ self.addEventListener('fetch', function (event) {
       })
   );
 });
+
+self.addEventListener('activate', function(e) {    
+    e.waitUntil(
+        caches.keys().then(function(keyList) {
+          return Promise.all(keyList.map(function(key) {
+            if (key !== cacheActual) {              
+              return caches.delete(key);
+            }
+          }));
+        })
+    );
+    return self.clients.claim();
+});
+
+
 
